@@ -1,15 +1,13 @@
 //@ts-check
 import React from "react";
 import { connect } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBomb } from "@fortawesome/free-solid-svg-icons";
-import { faFrown } from "@fortawesome/free-solid-svg-icons";
-import { faSmileBeam } from "@fortawesome/free-solid-svg-icons";
 
 import GameStats from "../../components/GameStats/GameStats";
+import Tile from "../../components/Tile/Tile";
+
 import { flagTile, openTile, setupNewGame, unFlagTile } from "../../store/game.reducer";
 
-import { mine, tile } from "../../constants";
+import { tile } from "../../constants";
 
 import "./GameBoard.scss";
 
@@ -77,58 +75,21 @@ class GameBoard extends React.Component {
 
 	renderCell = (r, c) => {
 		const { game } = this.props;
-		const { tiles, board, isMineRevealed } = game;
+		const { tiles, board, isAMineRevealed } = game;
 
 		const onClick = this.hasTouchInput ? this.onTileTouch : this.onTileLeftClick;
+
 		const props = {
 			"data-tile-r": r,
 			"data-tile-c": c,
+			theTile: tiles[r][c],
+			theCell: board[r][c],
+			isGameOver: isAMineRevealed,
 			onClick: onClick,
 			onContextMenu: this.onTileRightClick
 		};
 
-		if (isMineRevealed && tiles[r][c] === tile.flagged && board[r][c] !== mine) {
-			return (
-				<div className="board-cell wrong-mine" {...props}>
-					<FontAwesomeIcon icon={faFrown} />
-				</div>
-			);
-		}
-		if (tiles[r][c] === tile.flagged) {
-			return (
-				<div className="board-cell flagged" {...props}>
-					<FontAwesomeIcon icon={faBomb} />
-				</div>
-			);
-		}
-		if (tiles[r][c] === tile.explored) {
-			return (
-				<div className="board-cell explored" {...props}>
-					{board[r][c] !== 0 ? (
-						board[r][c] === mine ? (
-							<span className="explored-mine">
-								<FontAwesomeIcon icon={faBomb} />
-							</span>
-						) : (
-							board[r][c]
-						)
-					) : undefined}
-				</div>
-			);
-		}
-		if (tiles[r][c] === tile.defused) {
-			return (
-				<div className="board-cell defused" {...props}>
-					<FontAwesomeIcon icon={faSmileBeam} />
-				</div>
-			);
-		}
-
-		return (
-			<div className="board-cell cheat" {...props}>
-				{/* {board[r][c]} */}
-			</div>
-		);
+		return <Tile {...props} />;
 	};
 
 	renderGameStats() {

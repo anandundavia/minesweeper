@@ -24,81 +24,11 @@
 			margin-bottom: 0;
 		}
 
-		.board-cell {
-			cursor: pointer;
-
-			font-size: 30px;
-			flex: 1;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-
-			margin-right: 8px;
-
-			border-radius: 8px;
-			box-shadow: 2px 2px 4px black, -2px -2px 4px lighten(#525252, 20);
-
-			transition: 0.2s box-shadow ease-in;
-			background-color: darken(#525252, 10);
-		}
-
-		.board-cell.explored {
-			background-color: var(--color-0);
-			box-shadow: none;
-			cursor: default;
-			.explored-mine {
-				animation: bomb-color forwards 1s, shake infinite 0.8s ease-in-out;
-			}
-		}
-
-		.board-cell.flagged {
-			background: var(--color-2);
-		}
-
-		.board-cell.defused {
-			color: green;
-		}
-
-		.board-cell.wrong-mine {
-			color: #ca3e47;
-		}
-
-		.board-cell.cheat {
-			// opacity: 0.4;
-		}
-
 		.board-cell:last-child {
 			margin-right: 0;
 		}
 	}
 }
-
-@keyframes bomb-color {
-	from {
-		color: inherit;
-	}
-	to {
-		color: #ca3e47;
-	}
-}
-
-@keyframes shake {
-	0% {
-		transform: rotate(-65deg);
-	}
-	50% {
-		transform: rotate(-25deg);
-	}
-	100% {
-		transform: rotate(-65deg);
-	}
-}
-
-// box-shadow: 5px 5px 30px #212121, -5px -5px 30px #818181;
-// box-shadow: 2px 2px 12px #212121 inset, -2px -2px 12px #818181 inset;
-
-// ffffff
-// a1a1a1
 
 /* Custom, iPhone Retina */
 @media only screen and (min-width: 320px) {

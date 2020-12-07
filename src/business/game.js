@@ -72,10 +72,9 @@ export const exploreAndOpenAdjacentTiles = (gameBoard, tiles, r, c) => {
 		const nc = c + DC[k];
 		if (!(0 <= nr && nr < rows)) continue;
 		if (!(0 <= nc && nc < columns)) continue;
-		console.log(`${r},${c} => ${nr},${nc}`);
 		if (gameBoard[nr][nc] === 0) {
 			exploreAndOpenAdjacentTiles(gameBoard, tiles, nr, nc);
-		} else if (gameBoard[nr][nc] !== mine) {
+		} else if (gameBoard[nr][nc] !== mine && tiles[nr][nc] !== tile.flagged) {
 			tiles[nr][nc] = tile.explored;
 		}
 	}
@@ -90,7 +89,11 @@ export const findAndOpenNextMine = (gameBoard, tiles) => {
 				return true;
 			}
 			if (gameBoard[i][j] === mine && tiles[i][j] === tile.flagged) {
-				tiles[i][j] = tile.defused;
+				tiles[i][j] = tile.successfullyPredicted;
+				return true;
+			}
+			if (gameBoard[i][j] !== mine && tiles[i][j] === tile.flagged) {
+				tiles[i][j] = tile.wronglyPredicted;
 				return true;
 			}
 		}

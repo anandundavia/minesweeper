@@ -1,0 +1,45 @@
+@import "../../vars.scss";
+
+.mine {
+	cursor: pointer;
+	font-size: 30px;
+	flex: 1;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	margin-right: 8px;
+	border-radius: 8px;
+
+	transition: 0.2s box-shadow ease-in;
+
+	box-shadow: 2px 2px 4px $shadow-dark, -2px -2px 4px $shadow-light;
+}
+
+.mine.mine--explored {
+	box-shadow: none;
+	cursor: default;
+}
+
+.mine.mine--blasted {
+	color: $color-red;
+	box-shadow: none;
+	cursor: default;
+}
+
+.mine.mine--flagged {
+	background-color: darken($color-0, 5);
+}
+
+.mine.mine--wrongly-predicted {
+	color: $color-red;
+}
+
+.mine.mine--successfully-predicted {
+	color: $color-green;
+}
+
+.mine:last-child {
+	margin-right: 0px;
+}

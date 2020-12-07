@@ -1,4 +1,6 @@
+@import "./vars.scss";
+
 .app-container {
 	height: 100vh;
-	background-color: var(--color-0);
+	background-color: $color-0;
 }

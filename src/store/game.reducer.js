@@ -98,7 +98,7 @@ const initialState = {
 	numberOfAvailableFlags: 0,
 	tiles: [],
 
-	isMineRevealed: false
+	isAMineRevealed: false
 };
 
 export default function reducer(state = initialState, action) {
@@ -124,7 +124,7 @@ export default function reducer(state = initialState, action) {
 		case UPDATE_MINE_REVEALED: {
 			return {
 				...state,
-				isMineRevealed: !!action.payload
+				isAMineRevealed: !!action.payload
 			};
 		}
 		default:

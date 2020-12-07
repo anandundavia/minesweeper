@@ -1,8 +1,8 @@
 // @ts-check
 
 export const board = {
-	rows: 4,
-	columns: 3
+	rows: 8,
+	columns: 6
 };
 
 board.numberOfMines = Math.ceil(
@@ -13,7 +13,8 @@ export const tile = {
 	unexplored: 0,
 	explored: 1,
 	flagged: 2,
-	defused: 3
+	successfullyPredicted: 3,
+	wronglyPredicted: 4
 };
 
 export const mine = 10;
