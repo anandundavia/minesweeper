@@ -1,0 +1,16 @@
+.game-footer {
+	height: 5vh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.heart {
+		color: red;
+		padding: 0 4px;
+	}
+
+	a {
+		margin-left: 4px;
+	}
+}

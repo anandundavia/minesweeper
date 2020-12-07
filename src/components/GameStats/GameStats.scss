@@ -1,0 +1,20 @@
+.game-stats {
+	display: flex;
+	width: 100%;
+	height: 5vh;
+	.game-stats--single {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		cursor: default;
+
+		.stats--number {
+			font-size: 15px;
+		}
+		.stats--icon {
+			font-size: 25px;
+		}
+	}
+}
