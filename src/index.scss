@@ -9,3 +9,7 @@ body {
 	color: lightgray;
 	letter-spacing: 0.5px;
 }
+
+*::-webkit-scrollbar {
+	width: 0;
+}

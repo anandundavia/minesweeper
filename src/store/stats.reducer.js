@@ -2,6 +2,11 @@ import { getMaxScore, getNextScore } from "../business/game";
 
 const UPDATE_GAME_STATS = "[STATS] UPDATE_GAME_STATS";
 const SAVE_INTERVAL_HANDLE = "[STATS] SAVE_INTERVAL_HANDLE";
+const RESET = "[STATS] RESET";
+
+export const resetStats = () => dispatch => {
+	dispatch({ type: RESET });
+};
 
 export const stopUpdatingStats = () => (dispatch, getState) => {
 	const store = getState();
@@ -43,6 +48,10 @@ export default function reducer(state = initialState, action) {
 				...state,
 				interval: action.payload
 			};
+		}
+		case RESET: {
+			clearInterval(state.interval);
+			return { ...initialState };
 		}
 		default:
 			return state;

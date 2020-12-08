@@ -5,11 +5,15 @@
 	font-size: 30px;
 	flex: 1;
 
+	// Available height divided by number of rows
+	height: calc(60vh / 8);
+	width: calc(60vh / 8);
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
-	margin-right: 8px;
+	margin-right: 16px;
 	border-radius: 8px;
 
 	transition: 0.2s box-shadow ease-in;

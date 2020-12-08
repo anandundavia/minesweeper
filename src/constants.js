@@ -1,13 +1,13 @@
 // @ts-check
 
-export const board = {
-	rows: 8,
-	columns: 6
-};
+const aspectRatio = window.innerWidth / window.innerHeight;
+const multiplier = Math.max(aspectRatio, 1 / aspectRatio);
 
-board.numberOfMines = Math.ceil(
-	(board.rows / board.columns) * Math.sqrt(board.rows * board.columns)
-);
+export const board = { rows: 8 };
+board.columns = Math.floor((board.rows * multiplier) / 2);
+board.numberOfMines = Math.ceil((3 / multiplier) * Math.sqrt(board.rows * board.columns));
+
+board.numberOfMines & 1 && board.numberOfMines++;
 
 export const tile = {
 	unexplored: 0,

@@ -50,7 +50,7 @@ export default function Tile(props) {
 	function exploredMine() {
 		const { theCell } = props;
 		if (theCell === 0) return <div className="mine mine--explored" {...props}></div>;
-		if (theCell === mine)
+		if (theCell === mine) {
 			return (
 				<div className="mine mine--blasted" {...props}>
 					<span>
@@ -58,6 +58,7 @@ export default function Tile(props) {
 					</span>
 				</div>
 			);
+		}
 		return (
 			<div className="mine mine--explored" {...props}>
 				{theCell}
