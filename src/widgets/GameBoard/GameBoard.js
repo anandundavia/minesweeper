@@ -75,7 +75,7 @@ class GameBoard extends React.Component {
 
 	renderCell = (r, c) => {
 		const { game } = this.props;
-		const { tiles, board, isAMineRevealed } = game;
+		const { tiles, board, hasUserLost, hasUserWon } = game;
 
 		const onClick = this.hasTouchInput ? this.onTileTouch : this.onTileLeftClick;
 
@@ -84,7 +84,7 @@ class GameBoard extends React.Component {
 			"data-tile-c": c,
 			theTile: tiles[r][c],
 			theCell: board[r][c],
-			isGameOver: isAMineRevealed,
+			isGameOver: hasUserLost || hasUserWon,
 			onClick: onClick,
 			onContextMenu: this.onTileRightClick
 		};

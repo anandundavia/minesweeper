@@ -4,6 +4,7 @@ import {
 	findAndOpenNextMine,
 	getBoardDimensions,
 	getNumberOfMines,
+	checkUserWon,
 	prepareBoard
 } from "../business/game";
 import { mine, tile } from "../constants";
@@ -13,7 +14,8 @@ import { resetStats, stopUpdatingStats, userAction } from "./stats.reducer";
 const GAME_PREPARED = "[GAME] GAME_PREPARED";
 const UPDATE_TILES = "[GAME] UPDATE_TILES";
 const UPDATE_AVAILABLE_FLAGS = "[GAME] UPDATE_AVAILABLE_FLAGS";
-const UPDATE_MINE_REVEALED = "[GAME] UPDATE_MINE_REVEALED";
+const UPDATE_USER_LOST = "[GAME] UPDATE_USER_LOST";
+const UPDATE_USER_WON = "[GAME] UPDATE_USER_WON";
 const SAVE_INTERVAL_HANDLE = "[GAME] SAVE_INTERVAL_HANDLE";
 
 export const incrementAvailableFlags = () => (dispatch, getState) => {
@@ -38,7 +40,8 @@ export const setupNewGame = () => (dispatch, getState) => {
 	const numberOfAvailableFlags = numberOfMines;
 	const board = prepareBoard();
 	const tiles = [...new Array(rows)].map(() => new Array(columns).fill(tile.unexplored));
-	const isAMineRevealed = false;
+	const hasUserLost = false;
+	const hasUserWon = false;
 	const payload = {
 		rows,
 		columns,
@@ -46,23 +49,25 @@ export const setupNewGame = () => (dispatch, getState) => {
 		board,
 		numberOfAvailableFlags,
 		tiles,
-		isAMineRevealed
+		hasUserLost,
+		hasUserWon
 	};
 	dispatch({ type: GAME_PREPARED, payload: payload });
 };
 
 export const openTile = (row, column) => (dispatch, getState) => {
+	let state;
 	row = Number.parseInt(row, 10);
 	column = Number.parseInt(column, 10);
 	dispatch(userAction());
-	const state = getState();
+	state = getState();
 	const { tiles, board } = state.game;
 	if (tiles[row][column] === tile.explored) return;
 	exploreAndOpenAdjacentTiles(board, tiles, row, column);
 	dispatch({ type: UPDATE_TILES, payload: tiles });
 	if (board[row][column] === mine) {
 		dispatch(stopUpdatingStats());
-		dispatch({ type: UPDATE_MINE_REVEALED, payload: true });
+		dispatch({ type: UPDATE_USER_LOST, payload: true });
 		const interval = setInterval(() => {
 			const state = getState();
 			const { tiles, board } = state.game;
@@ -74,6 +79,25 @@ export const openTile = (row, column) => (dispatch, getState) => {
 			}
 		}, 400);
 		dispatch({ type: SAVE_INTERVAL_HANDLE, payload: interval });
+	}
+	state = getState();
+	const { numberOfAvailableFlags, hasUserLost } = state.game;
+	if (numberOfAvailableFlags === 0 && !hasUserLost) {
+		if (checkUserWon(state.game.board, state.game.tiles)) {
+			dispatch(stopUpdatingStats());
+			dispatch({ type: UPDATE_USER_WON, payload: true });
+			const interval = setInterval(() => {
+				const state = getState();
+				const { tiles, board } = state.game;
+				const found = findAndOpenNextMine(board, tiles);
+				if (!found) {
+					clearInterval(interval);
+				} else {
+					dispatch({ type: UPDATE_TILES, payload: tiles });
+				}
+			}, 400);
+			dispatch({ type: SAVE_INTERVAL_HANDLE, payload: interval });
+		}
 	}
 };
 
@@ -87,6 +111,25 @@ export const flagTile = (row, column) => (dispatch, getState) => {
 		tiles[row][column] = tile.flagged;
 		dispatch({ type: UPDATE_TILES, payload: tiles });
 		dispatch(decrementAvailableFlags());
+		const state = getState();
+		const { numberOfAvailableFlags, hasUserLost } = state.game;
+		if (numberOfAvailableFlags === 0 && !hasUserLost) {
+			if (checkUserWon(state.game.board, state.game.tiles)) {
+				dispatch(stopUpdatingStats());
+				dispatch({ type: UPDATE_USER_WON, payload: true });
+				const interval = setInterval(() => {
+					const state = getState();
+					const { tiles, board } = state.game;
+					const found = findAndOpenNextMine(board, tiles);
+					if (!found) {
+						clearInterval(interval);
+					} else {
+						dispatch({ type: UPDATE_TILES, payload: tiles });
+					}
+				}, 400);
+				dispatch({ type: SAVE_INTERVAL_HANDLE, payload: interval });
+			}
+		}
 	}
 };
 
@@ -112,7 +155,8 @@ const initialState = {
 	numberOfAvailableFlags: 0,
 	tiles: [],
 
-	isAMineRevealed: false,
+	hasUserLost: false,
+	hasUserWon: false,
 	interval: -1
 };
 
@@ -136,10 +180,16 @@ export default function reducer(state = initialState, action) {
 				numberOfAvailableFlags: action.payload
 			};
 		}
-		case UPDATE_MINE_REVEALED: {
+		case UPDATE_USER_LOST: {
 			return {
 				...state,
-				isAMineRevealed: !!action.payload
+				hasUserLost: !!action.payload
+			};
+		}
+		case UPDATE_USER_WON: {
+			return {
+				...state,
+				hasUserWon: !!action.payload
 			};
 		}
 		case SAVE_INTERVAL_HANDLE: {

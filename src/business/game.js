@@ -100,3 +100,16 @@ export const findAndOpenNextMine = (gameBoard, tiles) => {
 	}
 	return false;
 };
+
+export const checkUserWon = (gameBoard, tiles) => {
+	console.log({ gameBoard, tiles });
+	const { rows, columns } = board;
+	for (let i = 0; i < rows; i++) {
+		for (let j = 0; j < columns; j++) {
+			if (gameBoard[i][j] === mine && tiles[i][j] !== tile.flagged) {
+				return false;
+			}
+		}
+	}
+	return true;
+};

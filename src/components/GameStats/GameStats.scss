@@ -32,6 +32,14 @@
 		cursor: pointer;
 	}
 
+	.user-won {
+		color: $color-green;
+	}
+
+	.user-lost {
+		color: $color-red;
+	}
+
 	.game-stats--single:last-child {
 		margin-right: 0;
 	}
