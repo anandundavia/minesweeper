@@ -21,12 +21,12 @@ function GameStats(props) {
 	const { game, stats } = props;
 	const { numberOfMines, numberOfAvailableFlags, hasUserLost, hasUserWon } = game;
 	const { timeTaken, score } = stats;
-	const timeElapsed = new Date(timeTaken * 1000).toISOString().substr(11, 8);
+	const timeElapsed = new Date(timeTaken * 1000).toISOString().substr(14, 5);
 
 	function renderWhenUserLost() {
 		return (
 			<div className="game-stats">
-				<div className="game-stats--single " title="You Lost!">
+				<div className="game-stats--single" title="You Lost!">
 					<div className="stats--icon user-lost">
 						<FontAwesomeIcon icon={faHeartBroken} />
 					</div>
@@ -42,9 +42,8 @@ function GameStats(props) {
 					<div className="stats--icon">
 						<FontAwesomeIcon icon={faStar} />
 					</div>
-					<div className="stats--number">
-						{Math.floor(score)} / {timeElapsed}
-					</div>
+					{/* When the user has lost - the score is always 0 */}
+					<div className="stats--number">0 | {timeElapsed}</div>
 				</div>
 			</div>
 		);
@@ -53,7 +52,7 @@ function GameStats(props) {
 	function renderWhenUserWon() {
 		return (
 			<div className="game-stats">
-				<div className="game-stats--single " title="You Won!">
+				<div className="game-stats--single" title="You Won!">
 					<div className="stats--icon user-won">
 						<FontAwesomeIcon icon={faHeart} />
 					</div>
@@ -70,7 +69,7 @@ function GameStats(props) {
 						<FontAwesomeIcon icon={faStar} />
 					</div>
 					<div className="stats--number">
-						{Math.floor(score)} / {timeElapsed}
+						{Math.floor(score)} | {timeElapsed}
 					</div>
 				</div>
 			</div>

@@ -60,7 +60,9 @@ export const getNumberOfMines = () => board.numberOfMines;
 
 export const getMaxScore = () => maxScore;
 
-export const getNextScore = ({ time, score }) => score - 1 / (1 + (time * time) / score);
+// The higher time would be, the lower the deduction in score would be
+// Thus, the rate at which the score decreases also decreases as the time increases.
+export const getNextScore = ({ time, score }) => score - 1 / (1 + Math.sqrt(time / Math.PI));
 
 export const exploreAndOpenAdjacentTiles = (gameBoard, tiles, r, c) => {
 	const { rows, columns } = board;

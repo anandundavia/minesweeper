@@ -6,11 +6,12 @@
 	align-items: center;
 
 	.heart {
-		color: red;
 		padding: 0 4px;
 	}
 
 	a {
 		margin-left: 4px;
+		color: inherit;
+		cursor: pointer;
 	}
 }

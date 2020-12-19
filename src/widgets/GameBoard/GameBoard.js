@@ -25,6 +25,8 @@ class GameBoard extends React.Component {
 	}
 
 	openTile = (r, c) => {
+		r = Number.parseInt(r, 10);
+		c = Number.parseInt(c, 10);
 		const { tiles } = this.props.game;
 		if (tiles[r][c] !== tile.explored) {
 			this.props.openTile(r, c);
@@ -32,6 +34,8 @@ class GameBoard extends React.Component {
 	};
 
 	toggleFlagOnTile = (r, c) => {
+		r = Number.parseInt(r, 10);
+		c = Number.parseInt(c, 10);
 		const { tiles } = this.props.game;
 		switch (tiles[r][c]) {
 			case tile.flagged: {
@@ -45,7 +49,6 @@ class GameBoard extends React.Component {
 		}
 	};
 
-	// TODO
 	onTileTouch = e => {
 		const r = e.currentTarget.getAttribute("data-tile-r");
 		const c = e.currentTarget.getAttribute("data-tile-c");

@@ -1,14 +1,26 @@
 import { getMaxScore, getNextScore } from "../business/game";
 
+/***********/
+/* Actions */
+/***********/
+
 const UPDATE_GAME_STATS = "[STATS] UPDATE_GAME_STATS";
 const SAVE_INTERVAL_HANDLE = "[STATS] SAVE_INTERVAL_HANDLE";
 const RESET = "[STATS] RESET";
+
+/*******************/
+/* Action Creators */
+/*******************/
 
 export const resetStats = () => dispatch => {
 	dispatch({ type: RESET });
 };
 
-export const stopUpdatingStats = () => (dispatch, getState) => {
+/********************/
+/* Enhanced Actions */
+/********************/
+
+export const stopUpdatingStats = () => (_, getState) => {
 	const store = getState();
 	const { interval } = store.stats;
 	clearInterval(interval);
@@ -29,11 +41,19 @@ export const userAction = () => (dispatch, getState) => {
 	}
 };
 
+/*****************/
+/* Initial State */
+/*****************/
+
 const initialState = {
 	interval: -1,
 	timeTaken: 0,
 	score: getMaxScore()
 };
+
+/***********/
+/* Reducer */
+/***********/
 
 export default function reducer(state = initialState, action) {
 	switch (action.type) {

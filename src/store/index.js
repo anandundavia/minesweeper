@@ -7,7 +7,7 @@ import statsReducer from "./stats.reducer";
 
 const allReducers = combineReducers({
 	game: gameReducer,
-	stats: statsReducer,
+	stats: statsReducer
 });
 
 const initialState = {};

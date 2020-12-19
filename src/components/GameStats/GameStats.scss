@@ -16,14 +16,15 @@
 
 		cursor: default;
 
+		transition: 0.2s box-shadow ease-in;
 		box-shadow: 2px 2px 8px $shadow-dark inset, -2px -2px 8px $shadow-light inset;
 		color: gray;
 
 		.stats--number {
-			font-size: 1rem;
+			font-size: 1.2em;
 		}
 		.stats--icon {
-			font-size: 1.5rem;
+			font-size: 1.5em;
 			margin-right: 10px;
 		}
 	}
