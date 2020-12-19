@@ -34,6 +34,22 @@
 			margin-right: 0;
 		}
 	}
+
+	.controls-tip {
+		display: inline-block;
+		color: gray;
+		transform: translateY(12px);
+		transition: opacity ease-in 0.4s;
+		& > span {
+			display: inline-block;
+			&::first-letter {
+				text-transform: capitalize;
+			}
+		}
+	}
+	.controls-tip.hide {
+		opacity: 0;
+	}
 }
 
 /* Custom, iPhone Retina */

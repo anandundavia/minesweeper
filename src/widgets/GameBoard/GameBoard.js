@@ -12,11 +12,6 @@ import { tile } from "../../constants";
 import "./GameBoard.scss";
 
 class GameBoard extends React.Component {
-	constructor(props) {
-		super(props);
-		this.hasTouchInput = window.matchMedia("(pointer: coarse)").matches;
-	}
-
 	/**
 	 * @override
 	 */
@@ -49,20 +44,6 @@ class GameBoard extends React.Component {
 		}
 	};
 
-	onTileTouch = e => {
-		const r = e.currentTarget.getAttribute("data-tile-r");
-		const c = e.currentTarget.getAttribute("data-tile-c");
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-			this.toggleFlagOnTile(r, c);
-		}
-		this.timeout = setTimeout(() => {
-			this.timeout = null;
-			this.openTile(r, c);
-		}, 250);
-	};
-
 	onTileLeftClick = e => {
 		const r = e.currentTarget.getAttribute("data-tile-r");
 		const c = e.currentTarget.getAttribute("data-tile-c");
@@ -80,15 +61,13 @@ class GameBoard extends React.Component {
 		const { game } = this.props;
 		const { tiles, board, hasUserLost, hasUserWon } = game;
 
-		const onClick = this.hasTouchInput ? this.onTileTouch : this.onTileLeftClick;
-
 		const props = {
 			"data-tile-r": r,
 			"data-tile-c": c,
 			theTile: tiles[r][c],
 			theCell: board[r][c],
 			isGameOver: hasUserLost || hasUserWon,
-			onClick: onClick,
+			onClick: this.onTileLeftClick,
 			onContextMenu: this.onTileRightClick
 		};
 
@@ -99,6 +78,18 @@ class GameBoard extends React.Component {
 		return (
 			<div className="stats">
 				<GameStats />
+			</div>
+		);
+	}
+
+	renderGameControlsTip() {
+		const hasGameStarted = this.props.stats.interval !== -1;
+		const hasTouchInput = window.matchMedia("(pointer: coarse)").matches;
+		const primary = hasTouchInput ? "tap" : "click";
+		const secondary = hasTouchInput ? "long tap" : "right click";
+		return (
+			<div className={`controls-tip ${hasGameStarted ? "hide" : ""}`}>
+				<span>{primary} to reveal.</span> <span>{secondary} to flag.</span>
 			</div>
 		);
 	}
@@ -123,6 +114,7 @@ class GameBoard extends React.Component {
 		return (
 			<div className="game-board">
 				{this.renderGameStats()}
+				{this.renderGameControlsTip()}
 				{this.renderBoard()}
 			</div>
 		);

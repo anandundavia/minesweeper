@@ -1,4 +1,4 @@
-@use "./vars.scss";
+@import "./vars.scss";
 
 body {
 	margin: 0;
@@ -12,4 +12,8 @@ body {
 
 *::-webkit-scrollbar {
 	width: 0;
+}
+
+* {
+	-webkit-tap-highlight-color: transparent;
 }
