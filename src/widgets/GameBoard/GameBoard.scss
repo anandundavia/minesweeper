@@ -22,8 +22,8 @@
 		overflow-y: scroll;
 
 		.board-row {
-			flex: 1;
 			display: flex;
+			justify-content: center;
 			margin-bottom: 16px;
 		}
 		.board-row:last-child {
@@ -78,16 +78,14 @@
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width: 992px) {
-	.game-board .stats,
-	.game-board .board {
+	.game-board .stats {
 		width: 700px;
 	}
 }
 
 /* Large Devices, Wide Screens */
 @media only screen and (min-width: 1200px) {
-	.game-board .stats,
-	.game-board .board {
+	.game-board .stats {
 		width: 700px;
 	}
 }
