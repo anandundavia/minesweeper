@@ -1,12 +1,6 @@
 // @ts-check
 
-const aspectRatio = window.innerWidth / window.innerHeight;
-const multiplier = Math.max(aspectRatio, 1 / aspectRatio);
-
-export const board = { rows: 8 };
-
-board.columns = Math.max(6, Math.floor((board.rows * multiplier) / 2));
-board.columns & 1 && board.columns++;
+export const board = { rows: 8, columns: 6 };
 
 board.numberOfMines = Math.ceil(
 	(Math.sqrt(board.rows) + Math.sqrt(board.columns)) / 2 + Math.sqrt(board.rows * board.columns)

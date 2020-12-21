@@ -60,14 +60,6 @@
 	}
 }
 
-/* Extra Small Devices, Phones */
-@media only screen and (min-width: 480px) {
-	.game-board .stats,
-	.game-board .board {
-		width: 95vw;
-	}
-}
-
 /* Small Devices, Tablets */
 @media only screen and (min-width: 768px) {
 	.game-board .stats,
