@@ -8,3 +8,17 @@
 	font-size: 2em;
 	text-transform: uppercase;
 }
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 320px) {
+	.game-header {
+		font-size: 1.5em;
+	}
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+	.game-header {
+		font-size: 2em;
+	}
+}

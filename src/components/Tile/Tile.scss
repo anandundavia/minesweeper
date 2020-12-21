@@ -5,8 +5,8 @@
 	font-size: 30px;
 
 	// Available height divided by number of rows
-	height: calc(60vh / 8);
-	width: calc(60vh / 8);
+	height: clamp(50px, 7.5vh, 200px);
+	width: clamp(50px, 7.5vh, 200px);
 
 	display: flex;
 	justify-content: center;
@@ -45,4 +45,18 @@
 
 .mine:last-child {
 	margin-right: 0px;
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 320px) {
+	.mine {
+		font-size: 22px;
+	}
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+	.mine {
+		font-size: 30px;
+	}
 }
