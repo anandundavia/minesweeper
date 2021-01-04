@@ -55,7 +55,7 @@ class GameBoard extends React.Component {
 		const r = e.currentTarget.getAttribute("data-tile-r");
 		const c = e.currentTarget.getAttribute("data-tile-c");
 		this.toggleFlagOnTile(r, c);
-		window.navigator.vibrate(100);
+		navigator.vibrate(100);
 	};
 
 	renderCell = (r, c) => {
