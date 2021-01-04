@@ -64,6 +64,8 @@ export const openTile = (row, column) => (dispatch, getState) => {
 	const { tiles, board } = state.game;
 	// If the tile is already explored, do not do anything
 	if (tiles[row][column] === tile.explored) return;
+	// If the tile is flagged, do not do anything
+	if (tiles[row][column] === tile.flagged) return;
 	// Explore the current tile and if needed, open the adjacent ones too.
 	// In case if the current tile is not touching any tiles with a mine
 	// (meaning that the board content is 0) then we need to keep exploring
