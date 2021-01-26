@@ -21,6 +21,7 @@ const UPDATE_AVAILABLE_FLAGS = "[GAME] UPDATE_AVAILABLE_FLAGS";
 const UPDATE_USER_LOST = "[GAME] UPDATE_USER_LOST";
 const UPDATE_USER_WON = "[GAME] UPDATE_USER_WON";
 const SAVE_INTERVAL_HANDLE = "[GAME] SAVE_INTERVAL_HANDLE";
+const UPDATE_REVEAL_TIMEOUT = "[GAME] UPDATE_REVEAL_TIMEOUT";
 
 /*******************/
 /* Action Creators */
@@ -38,6 +39,11 @@ export const decrementAvailableFlags = () => (dispatch, getState) => {
 	dispatch({ type: UPDATE_AVAILABLE_FLAGS, payload: numberOfAvailableFlags - 1 });
 };
 
+export const updateRevealTimeout = (r, c, timeout) => ({
+	type: UPDATE_REVEAL_TIMEOUT,
+	payload: { r, c, timeout }
+});
+
 /********************/
 /* Enhanced Actions */
 /********************/
@@ -52,7 +58,16 @@ export const setupNewGame = () => (dispatch, getState) => {
 	const numberOfAvailableFlags = numberOfMines;
 	const board = prepareBoard();
 	const tiles = [...new Array(rows)].map(() => new Array(columns).fill(tile.unexplored));
-	const gameState = { rows, columns, numberOfMines, board, numberOfAvailableFlags, tiles };
+	const revealTimeouts = [...new Array(rows)].map(() => new Array(columns).fill(null));
+	const gameState = {
+		rows,
+		columns,
+		numberOfMines,
+		board,
+		numberOfAvailableFlags,
+		tiles,
+		revealTimeouts
+	};
 	const payload = Object.assign({}, initialState, gameState);
 	dispatch({ type: GAME_PREPARED, payload: payload });
 };
@@ -155,6 +170,8 @@ const initialState = {
 	numberOfAvailableFlags: 0,
 	tiles: [],
 
+	revealTimeouts: [],
+
 	hasUserLost: false,
 	hasUserWon: false,
 	interval: -1
@@ -200,6 +217,15 @@ export default function reducer(state = initialState, action) {
 			return {
 				...state,
 				interval: action.payload
+			};
+		}
+		case UPDATE_REVEAL_TIMEOUT: {
+			const revealTimeouts = state.revealTimeouts;
+			const { r, c, timeout } = action.payload;
+			revealTimeouts[r][c] = timeout;
+			return {
+				...state,
+				revealTimeouts: [...revealTimeouts]
 			};
 		}
 		default:

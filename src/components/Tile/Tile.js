@@ -67,7 +67,8 @@ export default function Tile(props) {
 	}
 
 	function unexploredMine() {
-		return <div className="mine" {...props}></div>;
+		const revealClass = props.revealAnimation ? "mine--revealing" : "";
+		return <div className={`mine ${revealClass}`} {...props}></div>;
 	}
 
 	function renderMine() {
@@ -104,9 +105,11 @@ export default function Tile(props) {
 Tile.propTypes = {
 	theTile: PropTypes.number.isRequired,
 	theCell: PropTypes.number.isRequired,
-	isGameOver: PropTypes.bool
+	isGameOver: PropTypes.bool,
+	revealAnimation: PropTypes.bool
 };
 
 Tile.defaultProps = {
-	isGameOver: false
+	isGameOver: false,
+	revealAnimation: false
 };

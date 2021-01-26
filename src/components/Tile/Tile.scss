@@ -43,6 +43,10 @@
 	color: $color-green;
 }
 
+.mine.mine--revealing {
+	animation: reveal infinite 0.125s ease-in-out;
+}
+
 .mine:last-child {
 	margin-right: 0px;
 }
@@ -58,5 +62,19 @@
 @media only screen and (min-width: 768px) {
 	.mine {
 		font-size: 30px;
+	}
+}
+
+@keyframes reveal {
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(0.8);
+	}
+
+	100% {
+		transform: scale(1);
 	}
 }

@@ -5,7 +5,13 @@ import { connect } from "react-redux";
 import GameStats from "../../components/GameStats/GameStats";
 import Tile from "../../components/Tile/Tile";
 
-import { flagTile, openTile, setupNewGame, unFlagTile } from "../../store/game.reducer";
+import {
+	flagTile,
+	openTile,
+	setupNewGame,
+	unFlagTile,
+	updateRevealTimeout
+} from "../../store/game.reducer";
 
 import { tile } from "../../constants";
 
@@ -44,6 +50,30 @@ class GameBoard extends React.Component {
 		}
 	};
 
+	onTileClick = e => {
+		const event = e;
+		const currentTarget = e.currentTarget;
+
+		const { game } = this.props;
+		const { revealTimeouts } = game;
+
+		const r = e.currentTarget.getAttribute("data-tile-r");
+		const c = e.currentTarget.getAttribute("data-tile-c");
+
+		if (revealTimeouts[r][c]) {
+			clearTimeout(revealTimeouts[r][c]);
+			event.currentTarget = currentTarget;
+			this.props.updateRevealTimeout(r, c, null);
+			this.onTileRightClick(event);
+			return;
+		}
+		const timeout = setTimeout(() => {
+			event.currentTarget = currentTarget;
+			this.onTileLeftClick(event);
+		}, 250);
+		this.props.updateRevealTimeout(r, c, timeout);
+	};
+
 	onTileLeftClick = e => {
 		const r = e.currentTarget.getAttribute("data-tile-r");
 		const c = e.currentTarget.getAttribute("data-tile-c");
@@ -60,7 +90,7 @@ class GameBoard extends React.Component {
 
 	renderCell = (r, c) => {
 		const { game } = this.props;
-		const { tiles, board, hasUserLost, hasUserWon } = game;
+		const { tiles, board, hasUserLost, hasUserWon, revealTimeouts } = game;
 
 		const props = {
 			"data-tile-r": r,
@@ -68,7 +98,8 @@ class GameBoard extends React.Component {
 			theTile: tiles[r][c],
 			theCell: board[r][c],
 			isGameOver: hasUserLost || hasUserWon,
-			onClick: this.onTileLeftClick,
+			revealAnimation: !!revealTimeouts[r][c],
+			onClick: this.onTileClick,
 			onContextMenu: this.onTileRightClick
 		};
 
@@ -87,7 +118,7 @@ class GameBoard extends React.Component {
 		const hasGameStarted = this.props.stats.interval !== -1;
 		const hasTouchInput = window.matchMedia("(pointer: coarse)").matches;
 		const primary = hasTouchInput ? "tap" : "click";
-		const secondary = hasTouchInput ? "long tap" : "right click";
+		const secondary = hasTouchInput ? "double tap" : "right click";
 		return (
 			<div className={`controls-tip ${hasGameStarted ? "hide" : ""}`}>
 				<span>{primary} to reveal.</span> <span>{secondary} to flag.</span>
@@ -127,7 +158,8 @@ const mapDispatchToProps = {
 	setupNewGame,
 	openTile,
 	flagTile,
-	unFlagTile
+	unFlagTile,
+	updateRevealTimeout
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);
